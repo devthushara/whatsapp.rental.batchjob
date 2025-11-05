@@ -1,0 +1,56 @@
+# Production profile config - keep secrets out of this file and inject via environment
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/your_db}
+    username: ${SPRING_DATASOURCE_USERNAME:your_db_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    validate-on-migrate: true
+    baseline-on-migrate: false
+
+  mail:
+    host: ${SPRING_MAIL_HOST:smtp.gmail.com}
+    port: ${SPRING_MAIL_PORT:587}
+    username: ${SPRING_MAIL_USERNAME:your@gmail.com}
+    password: ${SPRING_MAIL_PASSWORD:}
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 10000
+          timeout: 10000
+          writetimeout: 10000
+
+# Production admin recipients (can be set via env var override or secret)
+mail:
+  admin-recipients: ${MAIL_ADMIN_RECIPIENTS:thusharadev35@gmail.com,thushara35@gmail.com}
+
+batch:
+  jobs:
+    - name: booking-reminder
+      enabled: true
+      schedule:
+        # run every 30 minutes by default in prod
+        cron: ${JOB_BOOKING_CRON:0 0/30 * * * *}
+      dryRun: ${JOB_BOOKING_DRY_RUN:false}
+
+logging:
+  level:
+    org.springframework.mail: INFO
+    com.zoomigo.whatsapp: INFO
+
+# Gmail App Password example (do NOT store real passwords here)
+# To use Gmail SMTP with an app password, set these environment variables before starting the app:
+# SPRING_MAIL_HOST=smtp.gmail.com
+# SPRING_MAIL_PORT=587
+# SPRING_MAIL_USERNAME=your.email@gmail.com
+# SPRING_MAIL_PASSWORD=your_app_password_here
+
+# Start the application with:
+# java -jar target/<artifact>.jar --spring.profiles.active=prod
+
