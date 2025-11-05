@@ -1,30 +1,133 @@
 <!doctype html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Booking Received</title>
+  <style type="text/css">
+    /* Email-friendly, inline-friendly styles */
+    body { margin:0; padding:0; background:#f6f8fb; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+    .wrapper { width:100%; table-layout:fixed; background:#f6f8fb; padding:40px 0; }
+    .container { width:100%; max-width:680px; margin:0 auto; background:#ffffff; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(16,24,40,0.08); }
+    .header { background:linear-gradient(90deg,#0f62fe,#7bbcff); padding:20px 24px; color:#fff; }
+    .header h1 { margin:0; font-size:18px; font-weight:600; }
+    .content { padding:24px; color:#111827; }
+    .lead { font-size:15px; margin:0 0 12px; color:#334155; }
+    .details { width:100%; border-collapse:collapse; margin-top:12px; }
+    .details td { padding:8px 0; border-bottom:1px solid #eef2f7; }
+    .label { width:30%; color:#6b7280; font-size:13px; vertical-align:top; }
+    .value { width:70%; color:#0f172a; font-size:14px; vertical-align:top; }
+    .footer { padding:16px 24px; font-size:12px; color:#94a3b8; background:#fbfdff; text-align:center; }
+    .pill { display:inline-block; padding:4px 8px; border-radius:999px; background:#eef2ff; color:#0f62fe; font-weight:600; font-size:12px; }
+    @media (max-width:520px) {
+      .header h1 { font-size:16px; }
+      .label { display:block; width:100%; }
+      .value { display:block; width:100%; margin-top:6px; }
+      .details td { display:block; padding:10px 0; }
+    }
+  </style>
+</head>
 <body>
-  <p>Admin,</p>
-  <p>A new booking has been received with the following details:</p>
-  <ul>
-    <li><strong>ID:</strong> [[${id}]]</li>
-    <li><strong>Name:</strong> [[${name}]]</li>
-    <li><strong>WA ID:</strong> [[${waId}]]</li>
-    <li><strong>Bike:</strong> [[${bike}]]</li>
-    <li><strong>Duration:</strong> [[${duration}]]</li>
-    <li><strong>Price:</strong> [[${price}]]</li>
-    <li><strong>Deposit:</strong> [[${deposit}]]</li>
-    <li><strong>Status:</strong> [[${status}]]</li>
-    <li><strong>Start Date:</strong> [[${startDate}]]</li>
-    <li><strong>End Date:</strong> [[${endDate}]]</li>
-    <li><strong>Pickup Type:</strong> [[${pickupType}]]</li>
-    <li><strong>Delivery Address:</strong> [[${deliveryAddress}]]</li>
-    <li><strong>Promo Code:</strong> [[${promoCode?.code}]]</li>
-    <li><strong>Promo Discount Amount:</strong> [[${promoDiscountAmount}]]</li>
-    <li><strong>Promo Applied:</strong> [[${promoApplied}]]</li>
-    <li><strong>Currency Unit:</strong> [[${currencyUnit}]]</li>
-    <li><strong>Applied Exchange Rate:</strong> [[${appliedExchangeRate}]]</li>
-    <li><strong>Created At:</strong> [[${createdAt}]]</li>
-    <li><strong>Cancelled At:</strong> [[${cancelledAt}]]</li>
-  </ul>
+  <table class="wrapper" role="presentation" cellpadding="0" cellspacing="0">
+    <tr>
+      <td>
+        <table class="container" role="presentation" cellpadding="0" cellspacing="0">
+          <tr>
+            <td class="header">
+              <h1>New Booking Received</h1>
+            </td>
+          </tr>
+          <tr>
+            <td class="content">
+              <p class="lead">Hello Admin,</p>
+              <p class="lead">A new booking has been received with the details below. Please review and follow up as required.</p>
 
-  <p>Regards,<br/>Booking System</p>
+              <table class="details" role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td class="label"><strong>ID</strong></td>
+                  <td class="value" th:text="${id} ?: 'N/A'">ID</td>
+                </tr>
+                <tr>
+                  <td class="label"><strong>Name</strong></td>
+                  <td class="value" th:text="${name} ?: 'N/A'">Name</td>
+                </tr>
+                <tr>
+                  <td class="label"><strong>WA ID</strong></td>
+                  <td class="value" th:text="${waId} ?: 'N/A'">WA ID</td>
+                </tr>
+                <tr>
+                  <td class="label"><strong>Bike</strong></td>
+                  <td class="value" th:text="${bike} ?: 'N/A'">Bike</td>
+                </tr>
+                <tr>
+                  <td class="label"><strong>Duration</strong></td>
+                  <td class="value" th:text="${duration} ?: 'N/A'">Duration</td>
+                </tr>
+                <tr>
+                  <td class="label"><strong>Price</strong></td>
+                  <td class="value" th:text="${price} != null ? ${price} + ' ' + (${currencyUnit} ?: '') : 'N/A'">Price</td>
+                </tr>
+                <tr>
+                  <td class="label"><strong>Deposit</strong></td>
+                  <td class="value" th:text="${deposit} ?: 'N/A'">Deposit</td>
+                </tr>
+                <tr>
+                  <td class="label"><strong>Status</strong></td>
+                  <td class="value"><span class="pill" th:text="${status} ?: 'UNKNOWN'">STATUS</span></td>
+                </tr>
+                <tr>
+                  <td class="label"><strong>Start Date</strong></td>
+                  <td class="value" th:text="${startDate} ?: 'N/A'">Start Date</td>
+                </tr>
+                <tr>
+                  <td class="label"><strong>End Date</strong></td>
+                  <td class="value" th:text="${endDate} ?: 'N/A'">End Date</td>
+                </tr>
+                <tr>
+                  <td class="label"><strong>Pickup Type</strong></td>
+                  <td class="value" th:text="${pickupType} ?: 'N/A'">Pickup Type</td>
+                </tr>
+                <tr>
+                  <td class="label"><strong>Delivery Address</strong></td>
+                  <td class="value" th:text="${deliveryAddress} ?: 'N/A'">Delivery Address</td>
+                </tr>
+                <tr>
+                  <td class="label"><strong>Promo Code</strong></td>
+                  <td class="value" th:text="${promoCode} != null ? ${promoCode.code} : '—'">Promo Code</td>
+                </tr>
+                <tr>
+                  <td class="label"><strong>Promo Discount</strong></td>
+                  <td class="value" th:text="${promoDiscountAmount} ?: 'N/A'">Promo Discount</td>
+                </tr>
+                <tr>
+                  <td class="label"><strong>Promo Applied</strong></td>
+                  <td class="value" th:text="${promoApplied} ? 'Yes' : 'No'">Promo Applied</td>
+                </tr>
+                <tr>
+                  <td class="label"><strong>Applied Exchange Rate</strong></td>
+                  <td class="value" th:text="${appliedExchangeRate} ?: 'N/A'">Rate</td>
+                </tr>
+                <tr>
+                  <td class="label"><strong>Created At</strong></td>
+                  <td class="value" th:text="${createdAt} ?: 'N/A'">Created</td>
+                </tr>
+                <tr>
+                  <td class="label"><strong>Cancelled At</strong></td>
+                  <td class="value" th:text="${cancelledAt} ?: 'N/A'">Cancelled</td>
+                </tr>
+              </table>
+
+              <p style="margin-top:18px; color:#475569; font-size:13px;">This is an automated notification to admins. If you need to contact the booker, use WA ID or the system console.</p>
+            </td>
+          </tr>
+          <tr>
+            <td class="footer">
+              Booking System • <span th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm:ss')}">timestamp</span>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>
