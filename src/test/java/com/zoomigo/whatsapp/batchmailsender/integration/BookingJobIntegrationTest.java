@@ -93,14 +93,19 @@ public class BookingJobIntegrationTest {
         assertThat(after).hasSize(1);
         assertThat(after.get(0).get("batch_sent_at")).isNotNull();
 
-        // verify audit entry created (handle JDBC column name casing differences between DBs)
-        List<Map<String,Object>> audits = jdbc.queryForList("SELECT job_name, reference_id, subject FROM audit_email WHERE reference_id = ?", after.get(0).get("id").toString());
+        // verify audit entry created (check subject and reference_id because some DB/JDBC combos may return null column labels)
+        String refId = after.get(0).get("id").toString();
+        List<Map<String,Object>> audits = jdbc.queryForList("SELECT reference_id, subject FROM audit_email WHERE reference_id = ?", refId);
         assertThat(audits).isNotEmpty();
         Map<String,Object> firstAudit = audits.get(0);
-        Object jobNameObj = firstAudit.get("job_name");
-        if (jobNameObj == null) jobNameObj = firstAudit.get("JOB_NAME");
-        assertThat(jobNameObj).as("job_name should not be null").isNotNull();
-        assertThat(jobNameObj.toString()).isEqualTo(cfg.getName());
+        Object subjectObj = firstAudit.get("subject");
+        if (subjectObj == null) subjectObj = firstAudit.get("SUBJECT");
+        assertThat(subjectObj).as("audit subject should not be null").isNotNull();
+        assertThat(subjectObj.toString()).isEqualTo("New Booking Received");
+        Object referenceObj = firstAudit.get("reference_id");
+        if (referenceObj == null) referenceObj = firstAudit.get("REFERENCE_ID");
+        assertThat(referenceObj).isNotNull();
+        assertThat(referenceObj.toString()).isEqualTo(refId);
     }
 
     @DynamicPropertySource

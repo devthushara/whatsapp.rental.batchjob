@@ -28,7 +28,7 @@ spring:
 mail:
   admin-recipients:
     - thusharadev35@gmail.com
-    - thushara35@gmail.com
+    - buddhi.madu02@gmail.com
 
 management:
   endpoints:
